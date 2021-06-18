@@ -1,12 +1,11 @@
-import { hot1 } from "./js/hot1.js";
+import { module1 } from "./js/hot1.js";
 import hot2 from "./hot2.js";
 import hot3 from "./hot3.js";
 import "./style/index.css";
 import "./style/index.styl";
-hot1();
+module1();
 hot2();
 hot3();
-console.log(module);
 if (module.hot) {
   module.children
     .filter(

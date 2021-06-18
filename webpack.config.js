@@ -4,6 +4,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const UglifyjWebpackPlugin = require("uglifyjs-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const PurgeCSSPlugin = require("purgecss-webpack-plugin");
+const glob = require("glob");
 const publicPath = "static/";
 module.exports = {
   mode: process.env.NODE_ENV,
@@ -124,6 +126,9 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: publicPath + "css/[name][contenthash:6].css",
     }),
+    new PurgeCSSPlugin({
+      paths: glob.sync(`${path.join(__dirname, "src")}/**/*`, { nodir: true }),
+    }),
     new webpack.BannerPlugin({
       banner: () => {
         return `${new Date().toLocaleString()}`;
@@ -149,9 +154,9 @@ module.exports = {
     usedExports: true,
     removeEmptyChunks: true,
     minimizer: [
-      // new UglifyjWebpackPlugin({
-      //   sourceMap: false,
-      // }),
+      new UglifyjWebpackPlugin({
+        sourceMap: false,
+      }),
       new CssMinimizerPlugin({
         test: /\.css$/i,
       }),
@@ -169,6 +174,12 @@ module.exports = {
           priority: -20,
           reuseExistingChunk: true,
         },
+        styles: {
+          name: "styles",
+          test: /\.css$/,
+          chunks: "all",
+          enforce: true,
+        },
         commons: {
           name: "commons",
           chunks: "initial",
@@ -180,7 +191,7 @@ module.exports = {
   output: {
     filename: publicPath + "js/[name][contenthash:6].js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: "/",
+    publicPath: "./",
     assetModuleFilename: publicPath + "img/[contenthash:6][ext][query]",
     clean: true,
   },

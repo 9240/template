@@ -1,5 +1,5 @@
 import png2 from "../assets/2.png";
-let hot1 = function () {
+let module1 = function () {
   let count = 0;
   let odiv = document.createElement("div");
   odiv.setAttribute("id", "count");
@@ -11,4 +11,7 @@ let hot1 = function () {
   document.querySelector("#app").appendChild(odiv);
 };
 
-export { hot1 };
+let module2 = function () {
+  console.log("hot2");
+};
+export { module1, module2 };
