@@ -6,6 +6,7 @@ const UglifyjWebpackPlugin = require("uglifyjs-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const PurgeCSSPlugin = require("purgecss-webpack-plugin");
 const glob = require("glob");
+const { VueLoaderPlugin } = require("vue-loader");
 const publicPath = "static/";
 module.exports = {
   mode: process.env.NODE_ENV,
@@ -99,6 +100,10 @@ module.exports = {
         include: path.resolve(__dirname, "src"),
         use: "babel-loader",
       },
+      {
+        test: /\.vue$/i,
+        use: "vue-loader",
+      },
     ],
   },
   resolve: {
@@ -147,6 +152,8 @@ module.exports = {
       dependenciesCount: 10000,
       percentBy: null,
     }),
+    new webpack.HotModuleReplacementPlugin(),
+    new VueLoaderPlugin(),
   ],
   optimization: {
     minimize: true,
